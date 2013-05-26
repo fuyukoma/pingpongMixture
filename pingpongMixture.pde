@@ -8,7 +8,7 @@ import ddf.minim.effects.*;
 Ball ball;
 Pad pad;
 ArrayList tracks;
-boolean menu, replay;
+boolean menu, replay, pause = false;
 
 Minim minim;
 AudioPlayer base;
@@ -27,6 +27,7 @@ color pink = color(255, 61, 127);
 color gray1 = color(240);
 color gray2 = color(220);
 color gray3 = color(150);
+
 void addTracks() {
   tracks.add(new Track(ball.getX(), ball.getY(), ball.getX(), ball.getY()));
 }
@@ -186,6 +187,12 @@ void audioStop() {
     se[i].pause();
    }
 }
+void audioStart() {
+  base.loop();
+  for(int i = 0; i < se.length; i++){
+    se[i].play();
+   }
+}
 
 boolean overCircle(int x, int y, int diameter) {
   float disX = x - mouseX;
@@ -194,6 +201,23 @@ boolean overCircle(int x, int y, int diameter) {
     return true;
   } else {
     return false;
+  }
+}
+
+void keyPressed() {
+  if(key == ' ') {
+    if(pause) {
+      pause = false;
+      audioStart();
+      loop();
+    }else{
+      pause = true;
+      audioStop();
+      noLoop();
+    }
+  }
+  if(key == ESC) {
+    stop();
   }
 }
 
